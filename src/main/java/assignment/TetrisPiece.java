@@ -68,7 +68,7 @@ public final class TetrisPiece implements Piece {
             arr.add(new Point[]{new Point(0,0), new Point(1,0), new Point(1,1), new Point(1,2)});
         }
         else if (type == Piece.PieceType.RIGHT_L) {
-            arr.add(new Point[]{new Point(0, 1), new Point(0,1), new Point(2,1), new Point(2,2)});
+            arr.add(new Point[]{new Point(0, 1), new Point(1,1), new Point(2,1), new Point(2,2)});
             arr.add(new Point[]{new Point(1,0), new Point(1,1), new Point(1,2), new Point(2,0)});
             arr.add(new Point[]{new Point(0,0), new Point(0,1), new Point(1,1), new Point(2,1)});
             arr.add(new Point[]{new Point(1,0), new Point(1,1), new Point(1,2), new Point(0,2)});
@@ -149,7 +149,7 @@ public final class TetrisPiece implements Piece {
     public Piece counterclockwisePiece() {
         // TODO: Implement me.
         TetrisPiece newPiece = new TetrisPiece(this.getType());
-        newPiece.setIndex((this.getRotationIndex()-1)%4);
+        newPiece.setIndex(((this.getRotationIndex()-1)%4+4)%4);
         return newPiece;
     }
 
@@ -218,10 +218,18 @@ public final class TetrisPiece implements Piece {
     public int[] getSkirt() {
         // TODO: Implement me.
         // returns the lowest value at each x axis
-        int[] skirt = new int[this.getHeight()];
+        int[] skirt = new int[this.getWidth()];
+        for (int i = 0; i < this.getWidth(); i++) {
+            skirt[i] = Integer.MAX_VALUE;
+        }
         for (int i = 0; i < this.orientation.val.length; i++) {
             skirt[this.orientation.val[i].x] = Math.min(skirt[this.orientation.val[i].x], this.orientation.val[i].y);
         }
+        System.out.println();
+        for (int i = 0; i < skirt.length; i++) {
+            System.out.print(skirt[i] + " ");
+        }
+        System.out.println();
         return skirt;
     }
 
