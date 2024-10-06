@@ -18,9 +18,6 @@ import java.awt.*;
 public final class TetrisPiece implements Piece {
 
     public class Node {
-        //        public Node(PieceType type) {
-//            Node next =
-//        }
         Node next;
         Point[] val;
         int index;
@@ -104,36 +101,23 @@ public final class TetrisPiece implements Piece {
             index++;
 
         }
-        /**
-         * Critter x = new eachCritter();
-         * Piece x = new TetrisPiece;
-         */
-
-//        orientation.setLinkedList(type);
     }
 
     @Override
     public PieceType getType() {
         // TODO: Implement me.
-        //sets = {[point1, point2, ...], orientation2, orientation3 ...}
         return this.pieceType;
     }
 
     @Override
     public int getRotationIndex() {
         // TODO: Implement me.
-        //linkedlist with each node self.prev, self.next, self.points, self.index
         return this.orientation.index;
     }
 
     @Override
     public Piece clockwisePiece() {
         // TODO: Implement me.
-        //.next on linked list
-        /**
-         * Piece x = new TetrisPiece(this.getType())
-         * x.setIndex(this.getRotationIndex()+1 % 4)
-         */
         TetrisPiece newPiece = new TetrisPiece(this.getType());
         newPiece.setIndex((this.getRotationIndex()+1)%4);
         return newPiece;
@@ -210,14 +194,12 @@ public final class TetrisPiece implements Piece {
     @Override
     public Point[] getBody() {
         // TODO: Implement me.
-        // return whatever is in current linked list node
         return this.orientation.val;
     }
 
     @Override
     public int[] getSkirt() {
         // TODO: Implement me.
-        // returns the lowest value at each x axis
         int[] skirt = new int[this.getWidth()];
         for (int i = 0; i < this.getWidth(); i++) {
             skirt[i] = Integer.MAX_VALUE;
@@ -225,17 +207,11 @@ public final class TetrisPiece implements Piece {
         for (int i = 0; i < this.orientation.val.length; i++) {
             skirt[this.orientation.val[i].x] = Math.min(skirt[this.orientation.val[i].x], this.orientation.val[i].y);
         }
-        System.out.println();
-        for (int i = 0; i < skirt.length; i++) {
-            System.out.print(skirt[i] + " ");
-        }
-        System.out.println();
         return skirt;
     }
 
     @Override
     public boolean equals(Object other) {
-        // Ignore objects which aren't also tetris pieces.
         if(!(other instanceof TetrisPiece)) return false;
         TetrisPiece otherPiece = (TetrisPiece) other;
 
@@ -244,6 +220,5 @@ public final class TetrisPiece implements Piece {
             if (this.orientation.val[i].x != otherPiece.orientation.val[i].x || this.orientation.val[i].y != otherPiece.orientation.val[i].y) return false;
         }
         return true;
-        //verify that the points are all the same
     }
 }

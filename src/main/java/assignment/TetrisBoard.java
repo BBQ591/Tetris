@@ -77,7 +77,6 @@ public final class TetrisBoard implements Board {
                 kickArray = Piece.NORMAL_COUNTERCLOCKWISE_WALL_KICKS[rotatedPiece.getRotationIndex()];
             }
         }
-        System.out.println(rotatedPiece.getRotationIndex() + "THIS IS ROTATION INDEX");
         Point kicker;
         int pointsChecked;
         Point[] absolutePoints = getAbsolutePoints(rotatedPiece);
@@ -191,9 +190,7 @@ public final class TetrisBoard implements Board {
         else if (act == Board.Action.RIGHT) {
             lastAction = Board.Action.RIGHT;
             if (moveValid(1, false)) {
-//                erasePiece();
                 this.refX += 1;
-//                this.setPiece();
                 lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
@@ -203,7 +200,6 @@ public final class TetrisBoard implements Board {
         else if (act == Board.Action.DOWN) {
             lastAction = Board.Action.DOWN;
             if (moveValid(-1, true)) {
-//                erasePiece();
                 this.refY -= 1;
                 lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
@@ -216,26 +212,19 @@ public final class TetrisBoard implements Board {
         //IMPLEMENT ROTATIONS
         else if (act == Board.Action.CLOCKWISE) {
             lastAction = Board.Action.CLOCKWISE;
-            System.out.println("clockwise");
             if (rotateValid(true, piece.getType() == Piece.PieceType.STICK)) {
-                System.out.println("this is valid");
-//                erasePiece();
                 this.piece = this.piece.clockwisePiece();
                 lastResult = Board.Result.SUCCESS;
-//                setPiece();
                 return Board.Result.SUCCESS;
             }
             lastResult = Board.Result.OUT_BOUNDS;
-            System.out.println("this is not valid");
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.COUNTERCLOCKWISE) {
             lastAction = Board.Action.COUNTERCLOCKWISE;
 
             if (rotateValid(false, piece.getType() == Piece.PieceType.STICK)) {
-//                erasePiece();
                 this.piece = this.piece.counterclockwisePiece();
-//                setPiece();
                 lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
@@ -247,8 +236,6 @@ public final class TetrisBoard implements Board {
             int dropAmount = drop();
             this.refY -= dropAmount;
             lastResult = Board.Result.SUCCESS;
-//            erasePiece();
-//            this.setPiece();
             return Board.Result.SUCCESS;
         }
         else if (act == Board.Action.NOTHING){
@@ -279,19 +266,11 @@ public final class TetrisBoard implements Board {
         this.refX = spawnPosition.x;
         this.refY = spawnPosition.y;
         for (int i = 0; i < p.getBody().length; i++) {
-            //we dont have to check refX and refY < 0 here
-//            System.out.println(""+(this.getHeight()-1 - refY)+" "+(this.getHeight()-1 - refY + (-p.getBody()[i].y)));
             if (getX(p.getBody()[i].x) >= this.getWidth() || p.getBody()[i].x < 0 || getY(p.getBody()[i].y) >= this.board.length || getY(p.getBody()[i].y) < 0 || this.board[getY(p.getBody()[i].y)][getX(p.getBody()[i].x)] != null) {
                 throw new IllegalArgumentException();
             }
         }
         this.piece = p;
-        for (int i = 0; i < this.getHeight(); i++) {
-            for (int j = 0; j < this.getWidth(); j++) {
-                System.out.print(this.board[i][j]+" ");
-            }
-            System.out.println();
-        }
     }
 
     @Override
