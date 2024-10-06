@@ -156,16 +156,18 @@ public final class TetrisBoard implements Board {
                 }
             }
         }
-
+        if (clearRows.size() == 0) {
+            return;
+        }
         int clearRowsPointer = 0;
-        for (int i = 0; i < this.board.length; i++) {
+        for (int i = clearRows.get(clearRowsPointer); i < this.board.length; i++) {
             if (clearRowsPointer < clearRows.size() && i == clearRows.get(clearRowsPointer)) {
                 for (int j = 0; j < this.board[i].length; j++) {
                     this.board[i][j] = null;
                 }
                 clearRowsPointer++;
             }
-            else if (clearRowsPointer != 0) {
+            else{
                 for (int j = 0; j < this.board[i].length; j++) {
                     this.board[i-clearRowsPointer][j] = this.board[i][j];
                     this.board[i][j] = null;
