@@ -16,6 +16,7 @@ public final class TetrisBoard implements Board {
     public Piece piece;
     public int refX;
     public int refY;
+    public int rowsCleared;
     public Result lastResult;
     public Action lastAction;
     public TetrisBoard(int width, int height) {
@@ -155,6 +156,7 @@ public final class TetrisBoard implements Board {
                 }
             }
         }
+        rowsCleared = clearRows.size();
         if (clearRows.size() == 0) {
             return;
         }
@@ -251,6 +253,11 @@ public final class TetrisBoard implements Board {
     @Override
     public Board testMove(Action act) {
         TetrisBoard testBoard = new TetrisBoard(this.getWidth(), this.getHeight());
+        for (int row = 0; row < this.getHeight(); row++) {
+            for (int col = 0; col < this.getWidth(); col++) {
+                testBoard.board[row][col] = this.board[row][col];
+            }
+        }
         testBoard.move(act);
         return testBoard;
     }
@@ -293,10 +300,10 @@ public final class TetrisBoard implements Board {
     public Result getLastResult() { return lastResult; }
 
     @Override
-    public Action getLastAction() { return lastAction; }
+    public Action getLastAction() { return lastAction;}
 
     @Override
-    public int getRowsCleared() {return -1;}
+    public int getRowsCleared() {return this.rowsCleared;}
 
     @Override
     public int getWidth() { return this.board[0].length; }
