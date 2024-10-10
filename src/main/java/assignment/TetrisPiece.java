@@ -2,6 +2,8 @@ package assignment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Point;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.awt.*;
 
@@ -215,9 +217,19 @@ public final class TetrisPiece implements Piece {
         if(!(other instanceof TetrisPiece)) return false;
         TetrisPiece otherPiece = (TetrisPiece) other;
 
+        Set<Point> points = new HashSet<>();
+
+        for (int i = 0; i < this.orientation.val.length; i++) {
+            points.add(otherPiece.orientation.val[i]);
+        }
+
+        if(points.size() != this.orientation.val.length){
+            return false;
+        }
+
         // TODO: Implement me.
         for (int i = 0; i < this.orientation.val.length; i++) {
-            if (this.orientation.val[i].x != otherPiece.orientation.val[i].x || this.orientation.val[i].y != otherPiece.orientation.val[i].y) return false;
+            if (!points.contains(this.orientation.val[i])) return false;
         }
         return true;
     }
