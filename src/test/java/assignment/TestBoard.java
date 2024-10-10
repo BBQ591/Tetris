@@ -11,5 +11,5 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 public class TestBoard {
-    
+
 }
