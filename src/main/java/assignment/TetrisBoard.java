@@ -156,7 +156,7 @@ public final class TetrisBoard implements Board {
                 }
             }
         }
-        rowsCleared = clearRows.size();
+        this.rowsCleared = clearRows.size();
         if (clearRows.size() == 0) {
             return;
         }
@@ -179,74 +179,76 @@ public final class TetrisBoard implements Board {
 
     @Override
     public Result move(Action act) {
+        this.rowsCleared = 0;
         if (act == Board.Action.LEFT) {
-            lastAction = Board.Action.LEFT;
+            this.lastAction = Board.Action.LEFT;
             if (moveValid(-1, false)) {
                 this.refX -= 1;
-                lastResult = Board.Result.SUCCESS;
+                this.lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
-            lastResult = Board.Result.OUT_BOUNDS;
+            this.lastResult = Board.Result.OUT_BOUNDS;
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.RIGHT) {
-            lastAction = Board.Action.RIGHT;
+            this.lastAction = Board.Action.RIGHT;
             if (moveValid(1, false)) {
                 this.refX += 1;
-                lastResult = Board.Result.SUCCESS;
+                this.lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
-            lastResult = Board.Result.OUT_BOUNDS;
+            this.lastResult = Board.Result.OUT_BOUNDS;
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.DOWN) {
-            lastAction = Board.Action.DOWN;
+            this.lastAction = Board.Action.DOWN;
             if (moveValid(-1, true)) {
                 this.refY -= 1;
-                lastResult = Board.Result.SUCCESS;
+                this.lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
             setPiece();
             clearRows();
-            lastResult = Board.Result.PLACE;
+            this.lastResult = Board.Result.PLACE;
             return Board.Result.PLACE;
         }
         //IMPLEMENT ROTATIONS
         else if (act == Board.Action.CLOCKWISE) {
-            lastAction = Board.Action.CLOCKWISE;
+            this.lastAction = Board.Action.CLOCKWISE;
             if (rotateValid(true, piece.getType() == Piece.PieceType.STICK)) {
                 this.piece = this.piece.clockwisePiece();
-                lastResult = Board.Result.SUCCESS;
+                this.lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
-            lastResult = Board.Result.OUT_BOUNDS;
+            this.lastResult = Board.Result.OUT_BOUNDS;
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.COUNTERCLOCKWISE) {
-            lastAction = Board.Action.COUNTERCLOCKWISE;
+            this.lastAction = Board.Action.COUNTERCLOCKWISE;
 
             if (rotateValid(false, piece.getType() == Piece.PieceType.STICK)) {
                 this.piece = this.piece.counterclockwisePiece();
-                lastResult = Board.Result.SUCCESS;
+                this.lastResult = Board.Result.SUCCESS;
                 return Board.Result.SUCCESS;
             }
-            lastResult = Board.Result.OUT_BOUNDS;
+            this.lastResult = Board.Result.OUT_BOUNDS;
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.DROP) {
-            lastAction = Board.Action.DROP;
+            this.lastAction = Board.Action.DROP;
             int dropAmount = drop();
             this.refY -= dropAmount;
-            lastResult = Board.Result.SUCCESS;
-            return Board.Result.SUCCESS;
+            this.lastResult = Board.Result.PLACE;
+            setPiece();
+            return Board.Result.PLACE;
         }
         else if (act == Board.Action.NOTHING){
-            lastAction = Board.Action.NOTHING;
-            lastResult = Board.Result.SUCCESS;
+            this.lastAction = Board.Action.NOTHING;
+            this.lastResult = Board.Result.SUCCESS;
             return Board.Result.SUCCESS;
         }
-        lastAction = null;
-        lastResult = Board.Result.NO_PIECE;
+        this.lastAction = null;
+        this.lastResult = Board.Result.NO_PIECE;
         return Board.Result.NO_PIECE;
     }
 
@@ -255,9 +257,14 @@ public final class TetrisBoard implements Board {
         TetrisBoard testBoard = new TetrisBoard(this.getWidth(), this.getHeight());
         for (int row = 0; row < this.getHeight(); row++) {
             for (int col = 0; col < this.getWidth(); col++) {
-                testBoard.board[row][col] = this.board[row][col];
+                testBoard.board[row][col] = this.getGrid(col,row);
             }
         }
+        testBoard.piece = this.piece;
+        testBoard.refX = this.refX;
+        testBoard.refY = this.refY;
+
+        testBoard.rowsCleared = this.rowsCleared;
         testBoard.move(act);
         return testBoard;
     }
@@ -297,10 +304,10 @@ public final class TetrisBoard implements Board {
     }
 
     @Override
-    public Result getLastResult() { return lastResult; }
+    public Result getLastResult() { return this.lastResult; }
 
     @Override
-    public Action getLastAction() { return lastAction;}
+    public Action getLastAction() { return this.lastAction;}
 
     @Override
     public int getRowsCleared() {return this.rowsCleared;}
