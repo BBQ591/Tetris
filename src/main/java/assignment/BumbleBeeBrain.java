@@ -26,11 +26,6 @@ public class BumbleBeeBrain implements Brain {
      * things like rotating pieces.
      */
     private Board.Action enumerateOptions(Board currentBoard) {
-        currEmpty = 0;
-        for (int i = 0; i < currentBoard.getMaxHeight(); i++) {
-            currEmpty += (currentBoard.getWidth()-currentBoard.getRowWidth(i))*i;
-        }
-        currHoles = numIslands(currentBoard);
         totalUmbrellas = getUmbrella(currentBoard);
         currHeight = currentBoard.getMaxHeight();
         int maxLeft = -Integer.MAX_VALUE;
@@ -151,80 +146,22 @@ public class BumbleBeeBrain implements Brain {
         return maxPoint;
     }
     public static int currEmpty;
-    public static int currHoles;
     private int scoreBoard(Board newBoard) {
-        int empty = 0;
-        for (int i = 0; i < newBoard.getMaxHeight(); i++) {
-            empty += (newBoard.getWidth()-newBoard.getRowWidth(i))*i;
+        if (newBoard.getMaxHeight() >= newBoard.getHeight()-4) {
+            return -Integer.MAX_VALUE;
         }
-        System.out.println(totalUmbrellas);
-        return 10*newBoard.getRowsCleared()-75*((int)Math.pow(getMaxPieceHeight(newBoard), 1.5))-10*(numIslands(newBoard)-currHoles)-1000*(getUmbrella(newBoard) - totalUmbrellas)- 500*(int)Math.pow(averageDiffHeights(newBoard),2);
+        return 10*newBoard.getRowsCleared()-50000*(getUmbrella(newBoard) - totalUmbrellas)- 1000*(int)averageDiffHeights(newBoard);
     }
 
-    // Dimensions of the grid
-    private static final int[] dx = {-1, 1, 0, 0}; // row movements (up, down)
-    private static final int[] dy = {0, 0, -1, 1}; // column movements (left, right)
-    private static Set<Point> visited;
-    // Function to count the number of islands
-    public static int numIslands(Board grid) {
-        if (grid == null || grid.getWidth() == 0) {
-            return 0;
-        }
-        visited = new HashSet<>();
-        int numIslands = 0;
-        int rows = grid.getHeight();
-        int cols = grid.getWidth();
-
-        // Traverse each cell in the grid
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                // If we encounter land (i.e., '1'), we start a DFS to mark the entire island
-                if (grid.getGrid(j,i) == null && !visited.contains(new Point(i, j))) {
-                    numIslands++; // New island found
-                    floodFill(grid, i, j); // Mark the entire island
-                }
-            }
-        }
-
-        return numIslands;
-    }
     public static double averageDiffHeights(Board board) {
         double sum = 0;
         for (int i = 0; i < board.getWidth()-1; i++) {
-            sum += Math.abs(board.getColumnHeight(i)-board.getColumnHeight(i+1));
+            sum += Math.pow(Math.abs(board.getColumnHeight(i)-board.getColumnHeight(i+1)),4);
         }
         sum /= board.getWidth();
         return sum;
     }
 
-    // DFS-based Flood Fill to mark all parts of the current island
-    private static void floodFill(Board grid, int x, int y) {
-        // Check boundaries and if current cell is not land ('1'), return
-        if (x < 0 || x >= grid.getHeight() || y < 0 || y >= grid.getWidth() || visited.contains(new Point(x, y)) || grid.getGrid(y,x) != null) {
-            return;
-        }
 
-        // Mark the current cell as visited by setting it to '0' (water)
-        visited.add(new Point(x, y));
-
-        // Explore all 4 possible directions (up, down, left, right)
-        for (int i = 0; i < 4; i++) {
-            int newX = x + dx[i];
-            int newY = y + dy[i];
-            floodFill(grid, newX, newY);
-        }
-    }
-
-    // Example usage
-    public int getNumIslands(Board board) {
-        char[][] grid = {
-                {'1', '1', '0', '0', '0'},
-                {'1', '1', '0', '0', '0'},
-                {'0', '0', '1', '0', '0'},
-                {'0', '0', '0', '1', '1'}
-        };
-
-        return numIslands(board); // Output: 3
-    }
 
 }
