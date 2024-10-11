@@ -146,6 +146,7 @@ public class TestBoard {
         testBoard.setPiece();
 
         Assert.assertEquals(testBoard.dropHeight(testPiece, 4), 17);
+
     }
     @Test
     public void testTestMove(){
@@ -327,6 +328,10 @@ public class TestBoard {
         testBoard.clearRows();
 
         Assert.assertEquals(testBoard.getRowsCleared(), 1);
+
+        Assert.assertEquals(testBoard.getGrid(2,1), Piece.PieceType.SQUARE );
+        Assert.assertNull(testBoard.getGrid(2, 0));
+
 
 
     }
