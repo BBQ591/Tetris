@@ -25,7 +25,7 @@ public class JBrainTetris extends JTetris{
             public void actionPerformed(ActionEvent e) {
                 if (board.getCurrentPiece() != null) {
 
-                    tick(new LameBrain().nextMove(board));
+                    tick(new BumbleBeeBrain().nextMove(board));
 //                    tick(Board.Action.DOWN);
                 }
             }

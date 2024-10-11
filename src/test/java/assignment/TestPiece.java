@@ -9,27 +9,6 @@ import java.util.Arrays;
 public class TestPiece{
 
     @Test
-    public void testWallKicks() {
-        TetrisBoard tetrisBoard = new TetrisBoard(10,20);
-        Piece testStick = new TetrisPiece(Piece.PieceType.STICK);
-
-        testStick = testStick.counterclockwisePiece();
-
-        tetrisBoard.nextPiece(testStick.clockwisePiece(), new Point(0, 5));
-        tetrisBoard.move(Board.Action.LEFT);
-        tetrisBoard.setPiece();
-
-        System.out.println(tetrisBoard.getGrid(0,5));
-
-        tetrisBoard.nextPiece(testStick.clockwisePiece(), new Point(5, 5));
-
-
-
-
-
-    }
-
-    @Test
     public void testGetType(){
         Piece testT = new TetrisPiece(Piece.PieceType.T);
         Piece testLeftL = new TetrisPiece(Piece.PieceType.LEFT_L);

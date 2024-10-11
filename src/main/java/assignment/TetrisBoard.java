@@ -20,7 +20,7 @@ public final class TetrisBoard implements Board {
     public Result lastResult;
     public Action lastAction;
     public TetrisBoard(int width, int height) {
-        if (width < 0 || height < 0) {
+        if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException();
         }
         this.board = new Piece.PieceType[height][width];
@@ -195,9 +195,7 @@ public final class TetrisBoard implements Board {
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.RIGHT) {
-            System.out.println("going to right");
             this.lastAction = Board.Action.RIGHT;
-            System.out.println(this.refX);
             if (moveValid(1, false)) {
                 this.refX += 1;
                 this.lastResult = Board.Result.SUCCESS;
@@ -246,6 +244,7 @@ public final class TetrisBoard implements Board {
             this.refY -= dropAmount;
             this.lastResult = Board.Result.PLACE;
             setPiece();
+            clearRows();
             return Board.Result.PLACE;
         }
         else if (act == Board.Action.NOTHING){
@@ -285,8 +284,9 @@ public final class TetrisBoard implements Board {
     public void nextPiece(Piece p, Point spawnPosition) {
         this.refX = spawnPosition.x;
         this.refY = spawnPosition.y;
-        for (int i = 0; i < p.getBody().length; i++) {
-            if (getX(p.getBody()[i].x) >= this.getWidth() || p.getBody()[i].x < 0 || getY(p.getBody()[i].y) >= this.board.length || getY(p.getBody()[i].y) < 0 || this.board[getY(p.getBody()[i].y)][getX(p.getBody()[i].x)] != null) {
+        Point[] absolutePoints = getAbsolutePoints(p);
+        for (int i = 0; i < absolutePoints.length; i++) {
+            if (absolutePoints[i].x >= this.getWidth() || absolutePoints[i].x < 0 || absolutePoints[i].y >= this.getHeight() || absolutePoints[i].y < 0 || this.board[absolutePoints[i].y][absolutePoints[i].x] != null) {
                 throw new IllegalArgumentException();
             }
         }
@@ -345,12 +345,12 @@ public final class TetrisBoard implements Board {
 
     @Override
     public int getColumnHeight(int x) {
-        for (int i = 0; i < this.getHeight(); i++) {
-            if (this.board[i][x] == null) {
+        for (int i = this.getHeight()-1; i >=0; i--) {
+            if (this.board[i][x] != null) {
                 return i;
             }
         }
-        return this.getHeight();
+        return 0;
     }
 
     @Override
