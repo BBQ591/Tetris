@@ -350,7 +350,7 @@ public class TestBoard {
     }
 
     @Test
-    public void testGetMaxHeight(){
+    public void testGetMaxHeight() {
         TetrisBoard testBoard = new TetrisBoard(10,20);
         Piece testPiece = new TetrisPiece(Piece.PieceType.SQUARE);
         Piece testPieceStick = new TetrisPiece(Piece.PieceType.STICK);
@@ -360,17 +360,17 @@ public class TestBoard {
         testBoard.nextPiece(testPiece, new Point(0,0));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getMaxHeight(), 2);
+        Assert.assertEquals(testBoard.getMaxHeight(), 1);
 
         testBoard.nextPiece(testPiece, new Point(2,0));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getMaxHeight(), 2);
+        Assert.assertEquals(testBoard.getMaxHeight(), 1);
 
         testBoard.nextPiece(testPiece, new Point(2,2));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getMaxHeight(), 4);
+        Assert.assertEquals(testBoard.getMaxHeight(), 3);
 
         testBoard.nextPiece(testPiece, new Point(4,1));
         testBoard.setPiece();
@@ -381,13 +381,11 @@ public class TestBoard {
         testBoard.nextPiece(testPiece, new Point(8,0));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getMaxHeight(), 4);
+        Assert.assertEquals(testBoard.getMaxHeight(), 3);
 
         testBoard.clearRows();
 
-        Assert.assertEquals(testBoard.getMaxHeight(), 3);
-
-        ;
+        Assert.assertEquals(testBoard.getMaxHeight(), 2);
 
     }
 
@@ -401,12 +399,12 @@ public class TestBoard {
         testBoard.nextPiece(testPiece, new Point(0,0));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getColumnHeight(1), 2);
+        Assert.assertEquals(testBoard.getColumnHeight(1), 1);
 
         testBoard.nextPiece(testPiece, new Point(0,2));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getColumnHeight(1), 4);
+        Assert.assertEquals(testBoard.getColumnHeight(1), 3);
 
         testBoard.nextPiece(testPiece, new Point(2,0));
         testBoard.setPiece();
@@ -414,7 +412,7 @@ public class TestBoard {
         testBoard.nextPiece(testPiece, new Point(4,0));
         testBoard.setPiece();
 
-        Assert.assertEquals(testBoard.getColumnHeight(5), 2);
+        Assert.assertEquals(testBoard.getColumnHeight(5), 1);
 
         testBoard.nextPiece(testPiece, new Point(6,0));
         testBoard.setPiece();
@@ -424,7 +422,7 @@ public class TestBoard {
 
         testBoard.clearRows();
 
-        Assert.assertEquals(testBoard.getColumnHeight(1), 2);
+        Assert.assertEquals(testBoard.getColumnHeight(1), 1);
 
     }
 
