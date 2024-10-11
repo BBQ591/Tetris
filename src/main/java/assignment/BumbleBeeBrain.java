@@ -158,7 +158,7 @@ public class BumbleBeeBrain implements Brain {
             empty += (newBoard.getWidth()-newBoard.getRowWidth(i))*i;
         }
         System.out.println(totalUmbrellas);
-        return newBoard.getRowsCleared()-75*((int)Math.pow(getMaxPieceHeight(newBoard), 2))-10*(numIslands(newBoard)-currHoles)-1000*(getUmbrella(newBoard) - totalUmbrellas);
+        return 10*newBoard.getRowsCleared()-75*((int)Math.pow(getMaxPieceHeight(newBoard), 1.5))-10*(numIslands(newBoard)-currHoles)-1000*(getUmbrella(newBoard) - totalUmbrellas)- 500*(int)Math.pow(averageDiffHeights(newBoard),2);
     }
 
     // Dimensions of the grid
@@ -187,6 +187,14 @@ public class BumbleBeeBrain implements Brain {
         }
 
         return numIslands;
+    }
+    public static double averageDiffHeights(Board board) {
+        double sum = 0;
+        for (int i = 0; i < board.getWidth()-1; i++) {
+            sum += Math.abs(board.getColumnHeight(i)-board.getColumnHeight(i+1));
+        }
+        sum /= board.getWidth();
+        return sum;
     }
 
     // DFS-based Flood Fill to mark all parts of the current island
