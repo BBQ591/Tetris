@@ -9,7 +9,7 @@ import java.util.*;
  * total height of pieces on the board.
  */
 public class BumbleBeeBrain implements Brain {
-    //functino that is a part of hte interface
+    //function that is a part of the interface
     public Board.Action nextMove(Board currentBoard) {
         return enumerateOptions(currentBoard);
     }
