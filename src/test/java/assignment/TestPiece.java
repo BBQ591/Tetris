@@ -6,7 +6,28 @@ import org.testng.annotations.Test;
 import java.awt.*;
 import java.util.Arrays;
 
-public class TestPiece {
+public class TestPiece{
+
+    @Test
+    public void testWallKicks() {
+        TetrisBoard tetrisBoard = new TetrisBoard(10,20);
+        Piece testStick = new TetrisPiece(Piece.PieceType.STICK);
+
+        testStick = testStick.counterclockwisePiece();
+
+        tetrisBoard.nextPiece(testStick.clockwisePiece(), new Point(0, 5));
+        tetrisBoard.move(Board.Action.LEFT);
+        tetrisBoard.setPiece();
+
+        System.out.println(tetrisBoard.getGrid(0,5));
+
+        tetrisBoard.nextPiece(testStick.clockwisePiece(), new Point(5, 5));
+
+
+
+
+
+    }
 
     @Test
     public void testGetType(){
@@ -50,18 +71,6 @@ public class TestPiece {
         Assert.assertEquals(testRightDog.getRotationIndex(), 0);
     }
 
-    @Test
-    public void TestSetIndex() {
-        TetrisPiece t = new TetrisPiece(Piece.PieceType.T);
-
-        t.setIndex(1);
-
-        Assert.assertEquals(t.getRotationIndex(), 1);
-
-        t.setIndex(3);
-
-        Assert.assertEquals(t.getRotationIndex(), 3);
-    }
 
     @Test
     public void TestGetWidth() {
@@ -185,9 +194,10 @@ public class TestPiece {
         Assert.assertTrue(testSquare.equals(rotatedSquare));
 
         rotatedSquare = rotatedSquare.clockwisePiece();
-        Assert.assertTrue(testSquare.equals(rotatedSquare));
+        Assert.assertFalse(testSquare.equals(rotatedSquare));
 
         Assert.assertFalse(testRightDog.equals(testLeftDog));
     }
 
 }
+

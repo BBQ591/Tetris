@@ -20,6 +20,9 @@ public final class TetrisBoard implements Board {
     public Result lastResult;
     public Action lastAction;
     public TetrisBoard(int width, int height) {
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException();
+        }
         this.board = new Piece.PieceType[height][width];
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -34,6 +37,7 @@ public final class TetrisBoard implements Board {
         if (!down) {
             for (int i = 0; i < absolutePoints.length; i++) {
                 if (absolutePoints[i].x+move < 0 || absolutePoints[i].x+move >= this.getWidth() || this.board[absolutePoints[i].y][absolutePoints[i].x+move] != null) {
+//                    System.out.println(absolutePoints[i].x+move + " " + absolutePoints[i].y + " " +this.board[absolutePoints[i].y][absolutePoints[i].x+move]);
                     return false;
                 }
             }
@@ -135,7 +139,7 @@ public final class TetrisBoard implements Board {
                 continue;
             }
             currHeight = skirt[i]-1;
-            while (currHeight >= 0 && this.board[currHeight][this.refX+i] == null) {
+            while (currHeight >= 0 && this.board[currHeight][getX(i)] == null) {
                 currHeight--;
             }
             currHeight++;
@@ -191,7 +195,9 @@ public final class TetrisBoard implements Board {
             return Board.Result.OUT_BOUNDS;
         }
         else if (act == Board.Action.RIGHT) {
+            System.out.println("going to right");
             this.lastAction = Board.Action.RIGHT;
+            System.out.println(this.refX);
             if (moveValid(1, false)) {
                 this.refX += 1;
                 this.lastResult = Board.Result.SUCCESS;
@@ -293,6 +299,9 @@ public final class TetrisBoard implements Board {
             return false;
         }
         Board newBoard = (Board) other;
+        if (newBoard.getWidth() != this.getWidth() || newBoard.getHeight() != this.getHeight()) {
+            return false;
+        }
         for (int row = 0; row < this.getHeight(); row++) {
             for (int col = 0; col < this.getWidth(); col++) {
                 if (this.board[row][col] != newBoard.getGrid(col,row)) {
@@ -331,20 +340,7 @@ public final class TetrisBoard implements Board {
     public int dropHeight(Piece piece, int x) {
         Point[] absolutePoints = getAbsolutePoints(this.piece);
         int[] skirt = this.getAbsoluteSkirt(absolutePoints);
-        int finalDiff = this.getHeight();
-        int currHeight;
-        for (int i = 0; i < skirt.length; i++) {
-            if (skirt[i] == Integer.MAX_VALUE) {
-                continue;
-            }
-            currHeight = skirt[i]-1;
-            while (currHeight >= 0 && this.board[currHeight][x] == null) {
-                currHeight--;
-            }
-            currHeight++;
-            finalDiff = Math.min(skirt[i]-currHeight, finalDiff);
-        }
-        return skirt[x-this.refX]-finalDiff;
+        return skirt[x-this.refX]-drop();
     }
 
     @Override

@@ -121,21 +121,21 @@ public final class TetrisPiece implements Piece {
     public Piece clockwisePiece() {
         // TODO: Implement me.
         TetrisPiece newPiece = new TetrisPiece(this.getType());
-        newPiece.setIndex((this.getRotationIndex()+1)%4);
+        newPiece.orientation = this.orientation.next;
         return newPiece;
     }
 
-    public void setIndex(int rotationIndex) {
-        while (this.orientation.index != rotationIndex) {
-            this.orientation = this.orientation.next;
-        }
-    }
+//    public void setIndex(int rotationIndex) {
+//        while (this.orientation.index != rotationIndex) {
+//            this.orientation = this.orientation.next;
+//        }
+//    }
 
     @Override
     public Piece counterclockwisePiece() {
         // TODO: Implement me.
         TetrisPiece newPiece = new TetrisPiece(this.getType());
-        newPiece.setIndex(((this.getRotationIndex()-1)%4+4)%4);
+        newPiece.orientation = this.orientation.next.next.next;
         return newPiece;
     }
 
@@ -216,21 +216,6 @@ public final class TetrisPiece implements Piece {
     public boolean equals(Object other) {
         if(!(other instanceof TetrisPiece)) return false;
         TetrisPiece otherPiece = (TetrisPiece) other;
-
-        Set<Point> points = new HashSet<>();
-
-        for (int i = 0; i < this.orientation.val.length; i++) {
-            points.add(otherPiece.orientation.val[i]);
-        }
-
-        if(points.size() != this.orientation.val.length){
-            return false;
-        }
-
-        // TODO: Implement me.
-        for (int i = 0; i < this.orientation.val.length; i++) {
-            if (!points.contains(this.orientation.val[i])) return false;
-        }
-        return true;
+        return this.pieceType == otherPiece.pieceType && this.orientation.index == otherPiece.orientation.index;
     }
 }
