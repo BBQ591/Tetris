@@ -18,10 +18,13 @@ import java.awt.*;
 
 
 public final class TetrisPiece implements Piece {
-
+    //initializes linked list
     public class Node {
+        //points to the next node
         Node next;
+        //has the points of the current orientation
         Point[] val;
+        //has the rotationIndex
         int index;
         public Node(Point[] val, int index) {
             this.index = index;
@@ -29,17 +32,11 @@ public final class TetrisPiece implements Piece {
             this.next = null;
         }
     }
-    PieceType pieceType;
-    /**
-     * Construct a tetris piece of the given type. The piece should be in its spawn orientation,
-     * i.e., a rotation index of 0.
-     * 
-     * You may freely add additional constructors, but please leave this one - it is used both in
-     * the runner code and testing code.
-     */
+    public PieceType pieceType;
     public Node orientation;
 
     public TetrisPiece(PieceType type) {
+        //determines the set of points to initialize the piece with depending on its type
         this.pieceType = type;
         ArrayList<Point[]> arr = new ArrayList<>();
         if (type == Piece.PieceType.T) {
@@ -85,7 +82,7 @@ public final class TetrisPiece implements Piece {
             arr.add(new Point[]{new Point(1,0), new Point(1,1), new Point(0,1), new Point(0,2)});
         }
 
-
+        //creating circularly linked list
         orientation = new Node(null, 0);
         Node pointer = orientation;
         int index = 0;
@@ -105,18 +102,19 @@ public final class TetrisPiece implements Piece {
         }
     }
 
+    //returns the type of the current piece
     @Override
     public PieceType getType() {
         // TODO: Implement me.
         return this.pieceType;
     }
-
+    //gets the rotation index of the current piece. this is stored in each node
     @Override
     public int getRotationIndex() {
         // TODO: Implement me.
         return this.orientation.index;
     }
-
+    //clockwise means 1 rotation to the next node
     @Override
     public Piece clockwisePiece() {
         // TODO: Implement me.
@@ -124,13 +122,8 @@ public final class TetrisPiece implements Piece {
         newPiece.orientation = this.orientation.next;
         return newPiece;
     }
-
-//    public void setIndex(int rotationIndex) {
-//        while (this.orientation.index != rotationIndex) {
-//            this.orientation = this.orientation.next;
-//        }
-//    }
-
+    //1 move counterclockwise is the same as 3 moves clockwise. Since 3 moves counterclockwise is still constant time, then this is valid
+    //we didnt create a prev pointer because it would have complicated the code more
     @Override
     public Piece counterclockwisePiece() {
         // TODO: Implement me.
@@ -138,7 +131,7 @@ public final class TetrisPiece implements Piece {
         newPiece.orientation = this.orientation.next.next.next;
         return newPiece;
     }
-
+    //returns the width of the bounding box based on the current piece's type
     @Override
     public int getWidth() {
         // TODO: Implement me.
@@ -165,7 +158,7 @@ public final class TetrisPiece implements Piece {
         }
         return -1;
     }
-
+    //returns the height of the bounding box based on the current piece's type
     @Override
     public int getHeight() {
         // TODO: Implement me.
@@ -192,26 +185,28 @@ public final class TetrisPiece implements Piece {
         }
         return -1;
     }
-
+    //gets the current set of points relative to the bounding box
     @Override
     public Point[] getBody() {
         // TODO: Implement me.
         return this.orientation.val;
     }
-
+    //gets the lowest value at each column. If there is no point at a certain column, then skirt just saves it as Integer.MAX_Value
     @Override
     public int[] getSkirt() {
         // TODO: Implement me.
         int[] skirt = new int[this.getWidth()];
+        //initialize skirt
         for (int i = 0; i < this.getWidth(); i++) {
             skirt[i] = Integer.MAX_VALUE;
         }
+        //changing skirt based on piece's Point values
         for (int i = 0; i < this.orientation.val.length; i++) {
             skirt[this.orientation.val[i].x] = Math.min(skirt[this.orientation.val[i].x], this.orientation.val[i].y);
         }
         return skirt;
     }
-
+    //checks if the type and rotationIndex are the same. if they are, then they are the same piece. Otherwise, they arent the same piece
     @Override
     public boolean equals(Object other) {
         if(!(other instanceof TetrisPiece)) return false;

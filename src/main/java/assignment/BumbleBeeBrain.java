@@ -10,21 +10,10 @@ import java.util.*;
  */
 public class BumbleBeeBrain implements Brain {
 
-    private ArrayList<Board> options;
-    private ArrayList<Board.Action> firstMoves;
 
-    /**
-     * Decide what the next move should be based on the state of the board.
-     */
     public Board.Action nextMove(Board currentBoard) {
         return enumerateOptions(currentBoard);
     }
-
-    /**
-     * Test all of the places we can put the current Piece.
-     * Since this is just a Lame Brain, we aren't going to do smart
-     * things like rotating pieces.
-     */
     private Board.Action enumerateOptions(Board currentBoard) {
         totalUmbrellas = getUmbrella(currentBoard);
         currHeight = currentBoard.getMaxHeight();

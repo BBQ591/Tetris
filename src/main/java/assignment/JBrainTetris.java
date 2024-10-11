@@ -9,18 +9,11 @@ import java.util.Random;
 public class JBrainTetris extends JTetris{
 
     public static void main(String[] args) {
+        //the only thing that runs in main is launching the gui. nothing else is needed
         createGUI(new JBrainTetris());
     }
     JBrainTetris() {
-//        setPreferredSize(new Dimension(WIDTH*PIXELS+2, (HEIGHT+TOP_SPACE)*PIXELS+2));
-//        gameOn = false;
-//        board = new TetrisBoard(WIDTH, HEIGHT + TOP_SPACE);
-//        System.out.println(board);
-//        timer = new javax.swing.Timer(DELAY, new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                tick(new LameBrain().nextMove(board));
-//            }
-//        });
+        // At every increment of time, the BumbleBeeBrain runs a command based on its next best move
         timer = new javax.swing.Timer(DELAY, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (board.getCurrentPiece() != null) {
